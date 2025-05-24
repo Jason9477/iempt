@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EM QA Dense Layout</title>
+  <style>
+    body {
+      margin: 10px;
+      background: #fff;
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+<script>
+    let j=0,k=0;
+    //起始至結束 1101代表chapter 1-1 problem 1
+    for (let i = 1101; i <= 8710; i++) { 
+        k=Math.floor(i/1000);
+        j=Math.floor(i/100)-k*10;
+    const imgQ = new Image();
+    const imgA = new Image();
+    imgQ.src = `https://em.emedu.org.tw/exam/0${k}0${j}/${i}.png`;
+    imgA.src = `https://em.emedu.org.tw/exam/0${k}0${j}/${i}_a.png`;
+    //prob (0~1) 為抽選題目用 ex prob<0.2 題目顯示機率為0.2 prob<=1則為全部顯示
+    let prob = Math.random();
+    if (prob < 1.1) {
+        //先判斷題目是否存在
+        imgQ.onload = () => {
+            document.body.insertAdjacentHTML('beforeend', `
+                <div class="qa-pair" style="display: flex; align-items: flex-start;">
+                    <img src="${imgQ.src}" alt="Q${i}" style="width: 40%; max-height: 800px;">
+                    ${imgA.complete && imgA.naturalWidth !== 0 ? `<img src="${imgA.src}" alt="A${i}" style="width: 30%; max-height: 500px;">` : ''}
+                </div>
+            `);
+        };
+    }
+    if (j===7 && i%100 ===10) {
+        i=i+2101-1710;
+    }
+    else if (i % 10 === 0) {
+        i=i+90;
+    }
+    }
+</script>
+</body>
+</html>
